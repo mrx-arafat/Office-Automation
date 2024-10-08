@@ -24,4 +24,4 @@ async function googleSearch(query) {
   }
 }
 
-googleSearch("Arafat Mist");
+googleSearch("Easin Arafat MIST");

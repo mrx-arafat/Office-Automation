@@ -93,7 +93,6 @@ const { Select } = require("selenium-webdriver");
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
-    // Uncomment this line when you're ready to close the browser
     // await driver.quit();
   }
 })();
