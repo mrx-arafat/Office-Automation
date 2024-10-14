@@ -11,10 +11,7 @@ function getRandomDelay(min = 1000, max = 3000) {
 
 async function loginAndScrapeComments() {
   const username = "easinxarafat@gmail.com";
-<<<<<<< HEAD
-  n;
-=======
->>>>>>> c177755cd2164e24c42b15a315453d53b7c1b124
+
   const password = "xxxxxxxx";
 
   let chromeOptions = new chrome.Options();
