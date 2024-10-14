@@ -8,7 +8,6 @@ async function switchToNewWindow() {
   let windows = await driver.getAllWindowHandles();
   await driver.switchTo().window(windows[1]);
   console.log("Switched to the new window");
-  //   await driver.quit();
 }
 
 switchToNewWindow();

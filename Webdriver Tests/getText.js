@@ -6,7 +6,6 @@ async function getHeadingText() {
   let heading = await driver.findElement(By.css(".login-box__title"));
   let text = await heading.getText();
   console.log("Page Heading:", text);
-  //   await driver.quit();
 }
 
 getHeadingText();

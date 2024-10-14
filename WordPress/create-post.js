@@ -45,21 +45,19 @@ const { faker } = require("@faker-js/faker");
 
     console.log("Entering content...");
 
-    // Ensure the content block is present and ready
     const contentBlock = await driver.wait(
       until.elementLocated(
         By.css(".block-editor-default-block-appender__content")
       ),
       10000
     );
-    await contentBlock.click(); // This opens/focuses the content area
+    await contentBlock.click();
 
     const contentElement = await driver.findElement(
       By.css(".block-editor-rich-text__editable")
     );
-    await contentElement.click(); // Ensure the content block is focused
+    await contentElement.click();
 
-    // Instead of directly sending content to the content field, use JavaScript to insert text
     await driver.executeScript(
       "arguments[0].innerText = arguments[1]",
       contentElement,
@@ -68,7 +66,6 @@ const { faker } = require("@faker-js/faker");
 
     console.log("Clicking on the 'Publish' button...");
 
-    // Find and click the Publish button using a more specific selector
     const publishButton = await driver.wait(
       until.elementLocated(
         By.css(".editor-post-publish-button__button.is-primary.is-compact")
@@ -77,7 +74,6 @@ const { faker } = require("@faker-js/faker");
     );
     await publishButton.click();
 
-    // Wait for the publish confirmation, and click if necessary
     console.log("Waiting for the 'Confirm Publish' button...");
     const confirmPublishButton = await driver.wait(
       until.elementLocated(
@@ -91,7 +87,6 @@ const { faker } = require("@faker-js/faker");
 
     console.log("Post published successfully.");
 
-    // Wait for the "View Post" button and click it
     console.log("Waiting for the 'View Post' button...");
     const viewPostButton = await driver.wait(
       until.elementLocated(By.css("a.components-button.is-primary")),
@@ -100,13 +95,13 @@ const { faker } = require("@faker-js/faker");
     const postUrl = await viewPostButton.getAttribute("href");
     console.log(`Post published. You can view it at: ${postUrl}`);
 
-    await viewPostButton.click(); // This will open the post in the browser
-    await driver.sleep(3000); // Wait for the page to load
+    await viewPostButton.click();
+    await driver.sleep(3000);
 
     console.log("Post preview opened successfully.");
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
-    // await driver.quit();
+    ///
   }
 })();

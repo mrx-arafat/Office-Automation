@@ -18,7 +18,6 @@ async function fillLoginForm() {
   );
   await passwordField.sendKeys("password123");
   console.log("Filled email and password fields");
-  //   await driver.quit();
 }
 
 fillLoginForm();

@@ -19,7 +19,7 @@ async function navigateToPage() {
     await driver.navigate().refresh();
     console.log("Page refreshed");
   } finally {
-    // await driver.quit();
+    ///
   }
 }
 

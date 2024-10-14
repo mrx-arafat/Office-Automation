@@ -1,18 +1,16 @@
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 
-// Helper function for random delays
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Random delay generator (e.g., between 1 and 3 seconds)
 function getRandomDelay(min = 1000, max = 3000) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
 async function loginAndScrapeComments() {
-  const username = "easinxarafat@gmail.com"; // Replace with your actual email
+  const username = "easinxarafat@gmail.com";
   const password = "xxxxxxxx";
 
   let chromeOptions = new chrome.Options();
@@ -34,11 +32,9 @@ async function loginAndScrapeComments() {
 
     await driver.wait(until.titleContains("Facebook"), 10000);
 
-    // Navigate to the provided URL
     await driver.get("https://www.facebook.com/share/v/zQ3foCoyAayQm7iZ/");
     await delay(getRandomDelay(3000, 5000));
 
-    // Select the comments dropdown to display "All comments"
     const commentsDropdown = await driver.wait(
       until.elementLocated(
         By.xpath(
@@ -50,7 +46,6 @@ async function loginAndScrapeComments() {
     await commentsDropdown.click();
     await delay(getRandomDelay(2000, 3000));
 
-    // Select the "All comments" option
     const allCommentsOption = await driver.wait(
       until.elementLocated(
         By.xpath(
@@ -62,7 +57,6 @@ async function loginAndScrapeComments() {
     await allCommentsOption.click();
     await delay(getRandomDelay(2000, 4000));
 
-    // Now click "View More Comments" until no more exist
     let viewMoreExists = true;
     while (viewMoreExists) {
       try {
@@ -85,20 +79,17 @@ async function loginAndScrapeComments() {
       }
     }
 
-    // Scrape all comment names and text
     const commentBlocks = await driver.findElements(
       By.css('div[role="article"]')
-    ); // Find all comment blocks
+    );
 
     for (let block of commentBlocks) {
       try {
-        // Extract the name of the commenter
         const nameElement = await block.findElement(
           By.css('span[class*="xeuugli"]')
         );
         const commenterName = await nameElement.getText();
 
-        // Extract the comment text
         const commentElement = await block.findElement(
           By.css('div[dir="auto"]')
         );
@@ -110,10 +101,9 @@ async function loginAndScrapeComments() {
       }
     }
 
-    // Additional delay to observe the output
     await delay(10000);
   } finally {
-    // await driver.quit();
+    ///
   }
 }
 

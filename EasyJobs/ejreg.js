@@ -65,10 +65,8 @@ const { faker } = require("@faker-js/faker");
     await driver.findElement(By.id("username")).sendKeys(username);
     await driver.findElement(By.id("phone-no")).sendKeys(phoneNumber);
 
-    // Click the multi-select to open the dropdown
     await driver.findElement(By.css(".multiselect__tags")).click();
 
-    // Wait for the options to be visible
     await driver.wait(
       until.elementLocated(
         By.css("div.col-md-6.login-content li:nth-child(11)")
@@ -76,7 +74,6 @@ const { faker } = require("@faker-js/faker");
       10000
     );
 
-    // Select the desired option (make sure the index matches the desired item)
     await driver
       .findElement(By.css("div.col-md-6.login-content li:nth-child(11)"))
       .click();
@@ -109,6 +106,6 @@ const { faker } = require("@faker-js/faker");
     await driver.wait(until.urlIs("https://app.easy.jobs/dashboard"), 10000);
     await driver.findElement(By.css(".button.info-button")).click();
   } finally {
-    // await driver.quit();
+    ///
   }
 })();
