@@ -20,8 +20,8 @@ async function googleSearch(query) {
 
     console.log("Search completed for:", query);
   } finally {
-    // await driver.quit();
+    ///
   }
 }
 
-googleSearch("Arafat Mist");
+googleSearch("Easin Arafat MIST");

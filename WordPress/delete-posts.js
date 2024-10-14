@@ -30,7 +30,6 @@ const { Select } = require("selenium-webdriver");
 
     console.log("Checking if there are posts to delete...");
 
-    // Check if the 'Select All' checkbox exists (indicating there are posts)
     const postsExist = await driver
       .findElements(By.id("cb-select-all-1"))
       .then((elements) => elements.length > 0);
@@ -46,7 +45,6 @@ const { Select } = require("selenium-webdriver");
 
       console.log("Choosing 'Move to Trash' from bulk actions...");
 
-      // Wait for the bulk action dropdown to be available
       await driver.wait(
         until.elementLocated(By.id("bulk-action-selector-top")),
         10000
@@ -58,7 +56,7 @@ const { Select } = require("selenium-webdriver");
 
       if (bulkActionSelector) {
         const selectDropdown = new Select(bulkActionSelector);
-        await selectDropdown.selectByValue("trash"); // Selecting by value 'trash'
+        await selectDropdown.selectByValue("trash");
 
         console.log("Clicking 'Apply' button...");
         const applyButton = await driver.findElement(By.id("doaction"));
@@ -74,7 +72,6 @@ const { Select } = require("selenium-webdriver");
         console.error("Bulk action dropdown not found!");
       }
 
-      // Now check if "No posts found" appears after deletion
       console.log("Checking if 'No posts found' message appears...");
       const noPostsMessage = await driver
         .findElements(By.xpath("//td[contains(text(), 'No posts found.')]"))
@@ -93,7 +90,6 @@ const { Select } = require("selenium-webdriver");
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
-    // Uncomment this line when you're ready to close the browser
-    // await driver.quit();
+    ///
   }
 })();
