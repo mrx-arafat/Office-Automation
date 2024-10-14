@@ -1,19 +1,25 @@
 const { Builder, By, until } = require("selenium-webdriver");
 const { faker } = require("@faker-js/faker");
 
-async function registerAndLogin() {
+(async function example() {
   let driver = await new Builder().forBrowser("chrome").build();
 
-  let firstName = faker.person.firstName();
-  let lastName = faker.person.lastName();
-  let email = faker.internet.email();
-  let password = "Abcd@123";
-
   try {
-    // Navigate to the registration page
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const email = faker.internet.email();
+    const password = "Abcd@1234";
+
+    console.log(`Generated User Details: 
+      First Name: ${firstName}, 
+      Last Name: ${lastName}, 
+      Email: ${email}, 
+      Password: ${password}`);
+
     await driver.get("https://app.easy.jobs/registration");
 
-    // Fill in the registration form
+    console.log(await driver.getTitle());
+
     await driver
       .findElement(By.css("input[placeholder='Enter first name']"))
       .sendKeys(firstName);
@@ -30,25 +36,66 @@ async function registerAndLogin() {
       .findElement(By.css("input[placeholder='Re-Type Password']"))
       .sendKeys(password);
 
-    // Submit the registration form
     await driver.findElement(By.css("button[type='submit']")).click();
 
-    // Wait for the registration to complete
-    await driver.sleep(2000);
-
-    // Click the logout button
-    await driver.findElement(By.css(".back-button__text")).click();
-
-    // Wait for 10 seconds before logging in
-    await driver.sleep(10000);
-
-    // Wait for the login email input to be present
     await driver.wait(
-      until.elementLocated(By.css("input[placeholder='youremail@gmail.com']")),
+      until.urlIs("https://app.easy.jobs/subscribe?plan=free"),
+      10000
+    );
+    await driver.findElement(By.css("button[type='submit']")).click();
+
+    await driver.wait(
+      until.urlContains("https://app.easy.jobs/company/create"),
       10000
     );
 
-    // Fill in the login form
+    const companyName = faker.company.name();
+    const username = `${faker.internet
+      .userName()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "")}${Math.floor(Math.random() * 100)}`;
+    const phoneNumber = faker.phone.number();
+
+    console.log(`Generated Company Details: 
+      Company Name: ${companyName}, 
+      Username: ${username}, 
+      Phone Number: ${phoneNumber}`);
+
+    await driver.findElement(By.id("company-name")).sendKeys(companyName);
+    await driver.findElement(By.id("username")).sendKeys(username);
+    await driver.findElement(By.id("phone-no")).sendKeys(phoneNumber);
+
+    // Click the multi-select to open the dropdown
+    await driver.findElement(By.css(".multiselect__tags")).click();
+
+    // Wait for the options to be visible
+    await driver.wait(
+      until.elementLocated(
+        By.css("div.col-md-6.login-content li:nth-child(11)")
+      ),
+      10000
+    );
+
+    // Select the desired option (make sure the index matches the desired item)
+    await driver
+      .findElement(By.css("div.col-md-6.login-content li:nth-child(11)"))
+      .click();
+
+    const website = faker.internet.url();
+    await driver.findElement(By.id("website")).sendKeys(website);
+    await driver.findElement(By.css("label.checkbox.mt-3 span")).click();
+    await driver.findElement(By.css("button[type='submit']")).click();
+
+    await driver.findElement(By.css("button.dropdown-toggle")).click();
+    await driver
+      .findElement(
+        By.css("div.dropdown.profile-control li:nth-child(3) a:nth-child(1)")
+      )
+      .click();
+
+    await driver
+      .findElement(By.css("input[placeholder='youremail@gmail.com']"))
+      .clear();
     await driver
       .findElement(By.css("input[placeholder='youremail@gmail.com']"))
       .sendKeys(email);
@@ -56,25 +103,12 @@ async function registerAndLogin() {
       .findElement(By.css("input[placeholder='Enter password']"))
       .sendKeys(password);
 
-    // Submit the login form
+    await driver.sleep(3000);
+
     await driver.findElement(By.css("button[type='submit']")).click();
-
-    // Wait for a moment after logging in
-    await driver.sleep(2000);
-  } catch (error) {
-    console.error("Error:", error);
+    await driver.wait(until.urlIs("https://app.easy.jobs/dashboard"), 10000);
+    await driver.findElement(By.css(".button.info-button")).click();
   } finally {
-    await driver.quit();
+    // await driver.quit();
   }
-}
-
-(async function main() {
-  // Create an array of promises for 3 concurrent registrations
-  const registrations = [];
-  for (let i = 0; i < 3; i++) {
-    registrations.push(registerAndLogin());
-  }
-
-  // Wait for all registrations to complete
-  await Promise.all(registrations);
 })();
